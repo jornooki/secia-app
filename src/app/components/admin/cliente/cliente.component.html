@@ -2,7 +2,7 @@
 
   <div class="card col-lg-12 bg-light col-centered">
     <div class="card-header">
-      <h3> Funcionários
+      <h3> Clientes
         <button type="button" style="margin-right: 0px" (click)="add()" class="text-right btn btn-outline-info btn-lg">
           <i class="fa fa-plus-circle" aria-hidden="true"></i>
         </button>
@@ -15,22 +15,19 @@
           <tr>
             <th class="text-center">Nome</th>
             <th class="text-center">Email</th>
+            <th class="text-center">CNPJ</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let funcionario of funcionarios$ | async | filter :  departamentoFiltro">
+          <tr *ngFor="let cliente of clientes | async ">
+            <td class="text-center">{{cliente.nome}}</td>
+            <td class="text-center">{{cliente.email}}</td>
+            <td class="text-center">{{cliente.cnpj}}</td>
             <td class="text-center">
-              <img [src]="funcionario.foto || '/assets/imgs/no-image.png'" style="width: 100px" class="img-fluid">
-            </td>
-            <td class="text-center">{{funcionario.nome}}</td>
-            <td class="text-center">{{funcionario.email}}</td>
-            <td class="text-center">{{funcionario.departamento.nome}}</td>
-            <td class="text-center">{{funcionario.funcao}}</td>
-            <td class="text-center">
-              <button type="button" (click)="selecionaFuncionario(funcionario)" class="btn btn-success  ">
+              <button type="button" (click)="selecionaCliente(cliente)" class="btn btn-success  ">
                 <i class="fas fa-edit"></i>
               </button>
-              <button type="button" (click)="delete(funcionario)" class="btn btn-danger  ">
+              <button type="button" (click)="delete(cliente)" class="btn btn-danger  ">
                 <i class="fas fa-trash"></i>
               </button>
             </td>
@@ -41,7 +38,7 @@
 
       <div class="text-center">
         <a [routerLink]="['/admin/painel']" class="btn btn-primary ">
-          <i class="fa fa-search" aria-hidden="true"></i>
+          <i class="fa fa-back" aria-hidden="true"></i>
           Voltar</a>
       </div>
     </div>
@@ -49,13 +46,13 @@
 </div>
 
 
-<p-dialog header="Dados do funcionário" [minWidth]="600" [contentStyle]="{'overflow':'visible'}"
-  [(visible)]="displayDialogFuncionario" [responsive]="true" [modal]="true">
+<p-dialog header="Dados do Cliente" [minWidth]="600" [contentStyle]="{'overflow':'visible'}"
+  [(visible)]="displayDialogCliente" [responsive]="true" [modal]="true">
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="form.value">
     <form [formGroup]="form">
       <div class="ui-grid-row mb-3">
         <div class="ui-grid-col-4">
-          <label for="ocorrencia">Nome*:</label>
+          <label for="nome">Nome*:</label>
         </div>
         <div class="ui-grid-col-8 ">
           <input type="text" pInputText formControlName="nome" />
@@ -71,35 +68,16 @@
       </div>
       <div class="ui-grid-row mb-3">
         <div class="ui-grid-col-4">
-          <label for="departamento">Departamento*:</label>
+          <label for="cnpj">CNPJ*:</label>
         </div>
         <div class="ui-grid-col-8 ">
-          <ng-select [items]="departamentos$ | async" bindLabel="nome" formControlName="departamento">
-          </ng-select>
+          <input type="text" pInputText formControlName="cnpj" />
         </div>
       </div>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="funcao">Função:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <input type="text" pInputText formControlName="funcao" />
-        </div>
-      </div>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="foto">Foto:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-         <input type="file" #inputFile class="form-control" (change)="upload($event)" />
-         <progress style="width: 100%;" max="100" [value]="(uploadPercent | async)"></progress>
-        </div>
-      </div>
-
     </form>
   </div>
   <p-footer>
-    <div *ngIf="form.controls['nome'].errors || form.controls['email'].errors || form.controls['departamento'].errors "class="text-warning text-left ">*Preenchimento Obrigatório</div>
+    <div *ngIf="form.controls['nome'].errors || form.controls['email'].errors || form.controls['cnpj'].errors "class="text-warning text-left ">*Preenchimento Obrigatório</div>
     <div class="ui-dialog-buttonpane ">
       <button [disabled]="!form.valid" type="button" class="btn btn-primary" (click)="save()">
         <i class="fas fa-check-circle"></i> {{edit ? 'Atualizar' : 'Salvar'}}

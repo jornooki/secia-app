@@ -13,53 +13,69 @@ import {Cliente} from '../../../models/cliente.model';
 })
 export class ClienteComponent implements OnInit {
 
-  clientes$: Observable<Cliente[]>;
+  clientes: any;
   edit: boolean;
-  displayDialogFuncionario: boolean;
+  displayDialogCliente: boolean;
   form: FormGroup;
-
-  //Para upload da foto
-  @ViewChild('inputFile', { static: true }) inputFile: ElementRef;
-  uploadPercent: Observable<number>;
-  downloadURL: Observable<string>;
-  task: AngularFireUploadTask;
-  complete: boolean;
 
   constructor(
     private storage: AngularFireStorage,
     private clienteService: ClienteService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder) {
+  }
 
   ngOnInit() {
-    this.clientes$ = this.clienteService.list();
+   this.recuperarClientes();
     this.configForm();
+  }
+
+  private recuperarClientes() {
+
+    this.clienteService.list(success => {
+        this.clientes(success);
+      },
+      error => {
+        alert('Erro ao listar Clientes');
+        return error;
+      },
+      () => {
+      });
   }
 
   configForm() {
     this.form = this.fb.group({
-      id: new FormControl(),
       nome: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      funcao: new FormControl(''),
-      departamento: new FormControl('', Validators.required),
-      foto: new FormControl()
+      cnpj: new FormControl('', Validators.required),
     })
   }
 
   add() {
     this.form.reset();
     this.edit = false;
-    this.displayDialogFuncionario = true;
+    this.displayDialogCliente = true;
   }
 
-  selecionaFuncionario(cliente: Cliente) {
+  selecionaCliente(cliente: Cliente) {
     this.edit = true;
-    this.displayDialogFuncionario = true;
+    this.displayDialogCliente = true;
     this.form.setValue(cliente);
   }
 
   save() {
+
+    this.clienteService.salvar(this.form,
+      success => {
+        alert('Cliente salvo com sucesso.');
+      },
+      error => {
+        alert("Erro ao salvar");
+        return error;
+      },
+      () => {
+
+      });
+
+
   }
-
-
 }
