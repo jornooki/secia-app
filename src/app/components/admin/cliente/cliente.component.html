@@ -16,10 +16,11 @@
             <th class="text-center">Nome</th>
             <th class="text-center">Email</th>
             <th class="text-center">CNPJ</th>
+            <th class="text-center">Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let cliente of clientes | async ">
+          <tr *ngFor="let cliente of clientes">
             <td class="text-center">{{cliente.nome}}</td>
             <td class="text-center">{{cliente.email}}</td>
             <td class="text-center">{{cliente.cnpj}}</td>

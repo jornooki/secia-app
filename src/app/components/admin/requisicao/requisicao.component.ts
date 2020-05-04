@@ -24,7 +24,7 @@ export class RequisicaoComponent implements OnInit {
 
   constructor(private requisicaoService: RequisicaoService,
     private auth: AuthenticationService,
-    private funcionarioService: ClienteService,
+    private clienteService: ClienteService,
     private fb: FormBuilder) { }
 
   ngOnInit() {

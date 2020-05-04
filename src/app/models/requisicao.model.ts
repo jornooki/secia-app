@@ -30,11 +30,3 @@ export class Requisicao extends Model {
   }
 
 }
-
-//
-// export class Movimentacao extends Model {
-//   funcionario: Funcionario;
-//   dataHora: any;
-//   status: string
-//   descricao: string;
-// }

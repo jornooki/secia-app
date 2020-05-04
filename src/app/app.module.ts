@@ -16,6 +16,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 //Components sem Lazy
 import { LoginComponent } from './components/public/login/login.component';
+import {HttpClientModule} from '@angular/common/http';
 
 
 
@@ -28,6 +29,7 @@ import { LoginComponent } from './components/public/login/login.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,

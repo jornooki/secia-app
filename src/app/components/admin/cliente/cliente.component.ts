@@ -1,8 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import Swal from 'sweetalert2';
-import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
+import {AngularFireStorage} from '@angular/fire/storage';
 import {ClienteService} from '../../../services/cliente.service';
 import {Cliente} from '../../../models/cliente.model';
 
@@ -13,7 +12,7 @@ import {Cliente} from '../../../models/cliente.model';
 })
 export class ClienteComponent implements OnInit {
 
-  clientes: any;
+  clientes: Observable<Cliente[]>;
   edit: boolean;
   displayDialogCliente: boolean;
   form: FormGroup;
@@ -25,14 +24,14 @@ export class ClienteComponent implements OnInit {
   }
 
   ngOnInit() {
-   this.recuperarClientes();
     this.configForm();
+    this.recuperarClientes();
   }
 
   private recuperarClientes() {
 
     this.clienteService.list(success => {
-        this.clientes(success);
+        this.clientes = (success);
       },
       error => {
         alert('Erro ao listar Clientes');
@@ -63,8 +62,8 @@ export class ClienteComponent implements OnInit {
   }
 
   save() {
-
-    this.clienteService.salvar(this.form,
+    console.log(this.clienteService);
+    this.clienteService.salvar(this.form.value,
       success => {
         alert('Cliente salvo com sucesso.');
       },
@@ -75,7 +74,6 @@ export class ClienteComponent implements OnInit {
       () => {
 
       });
-
 
   }
 }
