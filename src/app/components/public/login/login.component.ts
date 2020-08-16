@@ -13,32 +13,68 @@ import {HttpParams} from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
 
+  isLogado = false;
   email: string;
   senha: string;
   mensagem: string;
   emailEnviado: boolean;
+  usuario: any;
   constructor(private authServ: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
 
+    this.isLogado  = this.authServ.isUsuarioLogado();
+    if(this.isLogado) {
+      this.router.navigate(['/admin/painel'])    }
   }
 
 
   logar() {
+
+    try {
+      if (this.email == undefined ||
+        this.senha == undefined) {
+        this.mensagem = 'Usuário ou senha vazios';
+        return;
+      }
+
+      const body = this.preencherUsuario();
+      this.authServ.autenticar(this.email, this.senha).then(() => {
+        this.router.navigate(['/admin/painel']);
+        this.authServ.buscarPermissoes(this.email,success => {
+            this.router.navigate(['/admin/painel']);
+
+            this.mensagem = '';
+            this.usuario = (success);
+          },
+          error => {
+            this.router.navigate(['/admin/painel']);
+
+            return error;
+          });
+
+      })
+        .catch(erro => {
+          if (erro.error.error_description === 'Bad credentials') {
+            this.mensagem = 'Usuário ou senha inválidos';
+          } else {
+            this.mensagem = 'Erro ao logar. Detalhes: ${erro}';
+          }
+        });
+    } catch (erro) {
+      this.mensagem = `Erro ao logar. Detalhes: ${erro}`;
+    }
+  }
+
+  private preencherUsuario() {
     const body = new HttpParams()
       .set('username', this.email)
       .set('password', this.senha)
       .set('grant_type', 'password');
-    this.authServ
-      .authenticate(body.toString())
-      .subscribe(() => {
-          this.router.navigate(['/admin/painel']);
-        },
-        erro => {
-          this.mensagem = `Erro ao logar. Detalhes: ${erro}`;
-        });
+    return body;
   }
-  // logar() {
+
+// logar() {
   //   try {
   //     if (this.email == undefined ||
   //       this.senha == undefined) {

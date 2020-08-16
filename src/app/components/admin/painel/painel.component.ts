@@ -10,6 +10,7 @@ export class PainelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log("aqui");
   }
 
 }
