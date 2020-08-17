@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +7,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 export class ClienteService {
 
   urlRest= 'http://localhost:8080/';
-  headers: HttpHeaders;
 
   constructor(
     private _httpClient: HttpClient
@@ -16,11 +15,8 @@ export class ClienteService {
   }
 
   list(callbackSuccess: any, callbackError: any, callbackFinally: any): any {
-    const option = {
-      headers: this.headers
-    };
 
-    this._httpClient.get(this.urlRest + 'clients')
+    this._httpClient.get(this.urlRest + 'clients/findAll')
       .subscribe(
         (response: any) => {
           callbackSuccess(response);
@@ -34,11 +30,8 @@ export class ClienteService {
   }
 
   salvar(cliente: any, callbackSuccess: any, callbackError: any, callbackFinally: any): any {
-    const option = {
-      headers: this.headers
-    };
 
-    this._httpClient.post(this.urlRest + 'clients', cliente, option)
+    this._httpClient.post(this.urlRest + 'clients/save', cliente)
       .subscribe(
         (response: any) => {
           callbackSuccess(response);

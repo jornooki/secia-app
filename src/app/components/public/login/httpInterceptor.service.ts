@@ -13,8 +13,8 @@ export class HttpInterceptorService implements HttpInterceptor {
       const request = req.clone({
 
         headers: new HttpHeaders({
-          'Authorization': 'Basic ' + btoa('secia-web:R--nR^b&#K5mx):Fwe]U0,g(pZiE>]AO%+2<&^$tGj:3T>8&b3B[ri!|8JE4EE))'),
-          'Content-type': 'application/x-www-form-urlencoded'
+          'Content-type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
         })
       });
       return next.handle(request);

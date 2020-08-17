@@ -20,7 +20,6 @@ export class AuthenticationService {
 
   autenticar(email, senha) {
 
-
     const login = new HttpParams()
       .set('username', email)
       .set('password', senha)
@@ -79,12 +78,7 @@ export class AuthenticationService {
 
   buscarPermissoes(email: string, callbackSuccess: any, callbackError: any) {
 
-    const headers = {
-      'Authorization': 'Basic ' + btoa('secia-web:R--nR^b&#K5mx):Fwe]U0,g(pZiE>]AO%+2<&^$tGj:3T>8&b3B[ri!|8JE4EE))'),
-      'Content-type': 'application/x-www-form-urlencoded'
-    }
-
-    return this.http.get(API_URL + '/user/buscarPermissoes/'+ email, { headers: headers }) .subscribe(
+    return this.http.get(API_URL + '/user/buscarPermissoes/'+ email) .subscribe(
       (response: any) => {
         callbackSuccess(response);
       },
