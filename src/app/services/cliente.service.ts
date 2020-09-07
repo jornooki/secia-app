@@ -31,7 +31,7 @@ export class ClienteService {
 
   salvar(cliente: any, callbackSuccess: any, callbackError: any, callbackFinally: any): any {
 
-    this._httpClient.post(this.urlRest + 'clients/save', cliente)
+    this._httpClient.post(this.urlRest + 'clients/save/', cliente)
       .subscribe(
         (response: any) => {
           callbackSuccess(response);
@@ -44,4 +44,15 @@ export class ClienteService {
       );
   }
 
+  delete(codigo: any, callbackSuccess: any, callbackError: any) {
+    this._httpClient.delete(this.urlRest + 'clients/delete/' + codigo)
+      .subscribe(
+        (response: any) => {
+          callbackSuccess(response);
+        },
+        error => {
+          callbackError(error);
+        }
+      );
+  }
 }

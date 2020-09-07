@@ -13,7 +13,7 @@ export class HttpInterceptorService implements HttpInterceptor {
       const request = req.clone({
 
         headers: new HttpHeaders({
-          'Content-type': 'application/x-www-form-urlencoded',
+          'Content-type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
         })
       });

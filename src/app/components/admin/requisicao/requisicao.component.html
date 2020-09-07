@@ -17,6 +17,7 @@
             <th class="text-center">Título</th>
             <th class="text-center">Prioridade</th>
             <th class="text-center">Descrição</th>
+            <th class="text-center">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -25,6 +26,7 @@
             <td class="text-center">{{requisicao.titulo}}</td>
             <td class="text-center">{{requisicao.prioridade}}</td>
             <td class="text-center">{{requisicao.descricao}}</td>
+            <td class="text-center">{{requisicao.status}}</td>
           </tr>
         </tbody>
       </table>
@@ -56,16 +58,47 @@
       </div>
       <div class="ui-grid-row mb-3">
         <div class="ui-grid-col-4">
-          <label for="data">Data*:</label>
+          <label for="data">Data Prevista Atendimento*:</label>
         </div>
         <div class="ui-grid-col-8 ">
-          <p-calendar formControlName="data" [locale]="pt" dateFormat="dd/mm/yy"></p-calendar>
+          <p-calendar formControlName="dataPrevisaoAtendimento" [locale]="pt" dateFormat="dd/mm/yy"></p-calendar>
           </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="status">Cliente*:</label>
         </div>
+        <div class="ui-grid-col-8 ">
+
+          <ng-select formControlName="cliente">
+            <ng-option *ngFor="let cliente of listaClientes" [value]="cliente">{{cliente.nome}}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="status">Status*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <ng-select [items]="listaStatus" formControlName="status">
+          </ng-select>
+        </div>
+      </div>
+      <div class="ui-grid-row mb-3">
+        <div class="ui-grid-col-4">
+          <label for="status">Prioridade*:</label>
+        </div>
+        <div class="ui-grid-col-8 ">
+          <ng-select [items]="listaPrioridades" formControlName="prioridade">
+          </ng-select>
+        </div>
+      </div>
+
     </form>
   </div>
   <p-footer>
-    <div *ngIf="form.controls['destino'].errors || form.controls['descricao'].errors" class="text-warning text-left ">
+    <div  class="text-warning text-left ">
       *Preenchimento Obrigatório</div>
     <div class="ui-dialog-buttonpane ">
       <button [disabled]="!form.valid" type="button" class="btn btn-primary" (click)="save()">

@@ -4,6 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {ClienteService} from '../../../services/cliente.service';
 import {Cliente} from '../../../models/cliente.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cliente',
@@ -43,6 +44,7 @@ export class ClienteComponent implements OnInit {
 
   configForm() {
     this.form = this.fb.group({
+      codigo: new FormControl(),
       nome: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       cnpj: new FormControl('', Validators.required),
@@ -61,19 +63,42 @@ export class ClienteComponent implements OnInit {
     this.form.setValue(cliente);
   }
 
+  delete(cliente: Cliente) {
+    Swal.fire({
+      title: 'Confirma a exclusão do Cliente?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.value) {
+        this.clienteService.delete(cliente.codigo, success => {
+            Swal.fire('Cliente excluído com sucesso!', '', 'success');
+            this.recuperarClientes();
+          },
+          error => {
+            alert("Erro ao salvar");
+            return error;
+          });
+      }
+    })
+  }
+
   save() {
-    console.log(this.clienteService);
     this.clienteService.salvar(this.form.value,
       success => {
-        alert('Cliente salvo com sucesso.');
+        Swal.fire('Cliente salvo com Sucesso', 'CLiente salvo com Sucesso', 'success');
+        this.displayDialogCliente = false;
+        this.recuperarClientes();
       },
       error => {
-        alert("Erro ao salvar");
+        this.displayDialogCliente = true;
+        Swal.fire('Erro ao salvar o Cliente.', 'Detalhes: ${error}', 'error');
         return error;
       },
       () => {
-
+        this.form.reset();
       });
-
   }
 }

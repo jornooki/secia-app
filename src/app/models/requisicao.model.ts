@@ -1,4 +1,5 @@
 import { Model } from '../core/model';
+import {Cliente} from './cliente.model';
 
 
 
@@ -7,11 +8,12 @@ export class Requisicao extends Model {
   pt:any;
 
   data: Date;
-  //ultimaAtualizacao: any;
+  dataPrevisaoAtendimento: Date;
   descricao: string;
   prioridade: string;
+  status:string;
   titulo: string;
-  codigoCliente: number;
+  cliente: Cliente;
   codigoLocal: number;
 
   ngOnInit() {

@@ -40,16 +40,11 @@ export class LoginComponent implements OnInit {
 
       const body = this.preencherUsuario();
       this.authServ.autenticar(this.email, this.senha).then(() => {
-        this.router.navigate(['/admin/painel']);
         this.authServ.buscarPermissoes(this.email,success => {
-            this.router.navigate(['/admin/painel']);
-
-            this.mensagem = '';
             this.usuario = (success);
+            this.router.navigate(['/admin/painel']);
           },
           error => {
-            this.router.navigate(['/admin/painel']);
-
             return error;
           });
 

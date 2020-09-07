@@ -16,11 +16,17 @@ import {map} from 'rxjs/operators';
 })
 export class RequisicaoComponent implements OnInit {
 
-  requisicoes$: Observable<Requisicao[]>;
+
+  requisicao$: Observable<Requisicao[]>;
+  requisicaoSelecionada: Requisicao = new Requisicao();
   edit: boolean;
   displayDialogRequisicao: boolean;
   form: FormGroup;
-  funcionarioLogado: Cliente;
+  usuarioLogado = this.auth.getUsuarioLoogado();
+  listaStatus: string[];
+  listaPrioridades: string[];
+  listaClientes: Cliente[];
+  pt: any;
 
   constructor(private requisicaoService: RequisicaoService,
     private auth: AuthenticationService,
@@ -28,20 +34,44 @@ export class RequisicaoComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.pt = {
+      firstDayOfWeek: 0,
+      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+      dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+        'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
+
     this.configForm();
+    this.carregaStatus();
+    this.carregaPrioridades();
+    this.recuperarClientes();
+
   }
 
   configForm() {
     this.form = this.fb.group({
-      id: new FormControl(),
-      destino: new FormControl('', Validators.required),
-      solicitante: new FormControl(''),
-      dataAbertura: new FormControl(''),
-      ultimaAtualizacao: new FormControl(''),
+      codigo: new FormControl(),
+      titulo: new FormControl('', Validators.required),
+      data: new FormControl(''),
+      dataPrevisaoAtendimento: new FormControl(''),
+      prioridade: new FormControl(''),
       status: new FormControl(''),
+      cliente: new FormControl('', Validators.required),
       descricao: new FormControl('', Validators.required),
-      movimentacoes: new FormControl('')
     })
+  }
+
+  carregaStatus() {
+    this.listaStatus = ['ABERTO', 'FECHADA'];
+  }
+
+  carregaPrioridades() {
+    this.listaPrioridades = ['URGENTE', 'ALTA', 'MÉDIA', 'BAIXA'];
   }
 
   add() {
@@ -53,11 +83,10 @@ export class RequisicaoComponent implements OnInit {
 
   setValorPadrao() {
     this.form.patchValue({
-      solicitante: this.funcionarioLogado,
+      solicitante: this.usuarioLogado,
       status: 'Aberto',
       dataAbertura: new Date(),
       ultimaAtualizacao: new Date(),
-      movimentacoes: []
     })
   }
 
@@ -68,10 +97,47 @@ export class RequisicaoComponent implements OnInit {
   }
 
   save() {
+    this.popularRequisicao(this.form.value)
+    this.requisicaoService.salvar(this.requisicaoSelecionada,
+      success => {
+        Swal.fire('Cliente salvo com Sucesso', 'CLiente salvo com Sucesso', 'success');
+        this.displayDialogRequisicao = false;
+       // this.recuperarClientes();
+      },
+      error => {
+        this.displayDialogRequisicao = true;
+        Swal.fire('Erro ao salvar o Cliente.', 'Detalhes: ${error}', 'error');
+        return error;
+      },
+      () => {
+        this.form.reset();
+      });
   }
 
   delete(depto: Requisicao) {
   }
 
+  private recuperarClientes() {
 
+    this.clienteService.list(success => {
+        this.listaClientes = (success);
+      },
+      error => {
+        alert('Erro ao listar Clientes');
+        return error;
+      },
+      () => {
+      });
+  }
+
+  private popularRequisicao(value: any) {
+    this.requisicaoSelecionada.descricao = value.descricao;
+    this.requisicaoSelecionada.cliente = value.cliente;
+    this.requisicaoSelecionada.codigoLocal = 10;
+    this.requisicaoSelecionada.data = new Date();
+    this.requisicaoSelecionada.prioridade = value.prioridade;
+    this.requisicaoSelecionada.status = value.status;
+    this.requisicaoSelecionada.titulo = value.titulo;
+
+  }
 }
