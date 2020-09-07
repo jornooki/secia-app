@@ -13,18 +13,18 @@
       <table class="table table-striped table-hover table-bordered col-centered">
         <thead class="thead-dark">
           <tr>
-            <th class="text-center">Abertura</th>
             <th class="text-center">Título</th>
             <th class="text-center">Prioridade</th>
+            <th class="text-center">Cliente</th>
             <th class="text-center">Descrição</th>
             <th class="text-center">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let requisicao of requisicoes$ | async ">
-            <td class="text-center">{{requisicao.data.toDate() | date : 'dd/MM/yyyy HH:mm'}}</td>
+          <tr *ngFor="let requisicao of requisicoes">
             <td class="text-center">{{requisicao.titulo}}</td>
             <td class="text-center">{{requisicao.prioridade}}</td>
+            <td class="text-center">{{requisicao.nomeCliente}}</td>
             <td class="text-center">{{requisicao.descricao}}</td>
             <td class="text-center">{{requisicao.status}}</td>
           </tr>
@@ -73,15 +73,6 @@
           <ng-select formControlName="cliente">
             <ng-option *ngFor="let cliente of listaClientes" [value]="cliente">{{cliente.nome}}
             </ng-option>
-          </ng-select>
-        </div>
-      </div>
-      <div class="ui-grid-row mb-3">
-        <div class="ui-grid-col-4">
-          <label for="status">Status*:</label>
-        </div>
-        <div class="ui-grid-col-8 ">
-          <ng-select [items]="listaStatus" formControlName="status">
           </ng-select>
         </div>
       </div>

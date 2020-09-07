@@ -17,7 +17,7 @@ import {map} from 'rxjs/operators';
 export class RequisicaoComponent implements OnInit {
 
 
-  requisicao$: Observable<Requisicao[]>;
+  requisicoes: Observable<Requisicao[]>;
   requisicaoSelecionada: Requisicao = new Requisicao();
   edit: boolean;
   displayDialogRequisicao: boolean;
@@ -50,8 +50,23 @@ export class RequisicaoComponent implements OnInit {
     this.carregaStatus();
     this.carregaPrioridades();
     this.recuperarClientes();
+    this.recuperarRequisicoes();
 
   }
+
+  private recuperarRequisicoes() {
+
+    this.requisicaoService.list(success => {
+        this.requisicoes = (success);
+      },
+      error => {
+        alert('Erro ao listar Requisições');
+        return error;
+      },
+      () => {
+      });
+  }
+
 
   configForm() {
     this.form = this.fb.group({
@@ -132,11 +147,8 @@ export class RequisicaoComponent implements OnInit {
 
   private popularRequisicao(value: any) {
     this.requisicaoSelecionada.descricao = value.descricao;
-    this.requisicaoSelecionada.cliente = value.cliente;
-    this.requisicaoSelecionada.codigoLocal = 10;
-    this.requisicaoSelecionada.data = new Date();
+    this.requisicaoSelecionada.cliente = value.cliente.codigo;
     this.requisicaoSelecionada.prioridade = value.prioridade;
-    this.requisicaoSelecionada.status = value.status;
     this.requisicaoSelecionada.titulo = value.titulo;
 
   }

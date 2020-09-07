@@ -18,6 +18,21 @@ export class RequisicaoService  {
 
   }
 
+  list(callbackSuccess: any, callbackError: any, callbackFinally: any): any {
+
+    this._httpClient.get(this.urlRest + 'tasks/findAll')
+      .subscribe(
+        (response: any) => {
+          callbackSuccess(response);
+          callbackFinally();
+        },
+        error => {
+          callbackError(error);
+          callbackFinally();
+        }
+      );
+  }
+
   salvar(requisicao: any, callbackSuccess: any, callbackError: any, callbackFinally: any): any {
     this._httpClient.post(this.urlRest + 'tasks/save/', requisicao)
       .subscribe(

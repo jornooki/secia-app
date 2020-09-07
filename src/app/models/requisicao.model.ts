@@ -14,7 +14,7 @@ export class Requisicao extends Model {
   status:string;
   titulo: string;
   cliente: Cliente;
-  codigoLocal: number;
+  nomeCliente: string;
 
   ngOnInit() {
     this.pt = {
