@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 const API_URL = 'http://localhost:8080';
 
@@ -15,8 +16,10 @@ export class AuthenticationService {
 
   SESSION_KEY = 'auth_user';
 
-  constructor(private afAuth: AngularFireAuth, private http: HttpClient) {
-  }
+
+  private loggedIn = new BehaviorSubject<boolean>(false);
+
+  constructor(private afAuth: AngularFireAuth, private http: HttpClient) {}
 
   autenticar(email, senha) {
 
@@ -33,6 +36,7 @@ export class AuthenticationService {
 
     return this.http.post(API_URL + '/oauth/token', login, { headers: headers })
        .toPromise().then(res => {
+         this.loggedIn.next(true);
          this.salvarToken(res);
          this.salvarUsuarioSessao(email);
        });
@@ -56,6 +60,7 @@ export class AuthenticationService {
 
   logout(): Promise<void> {
     sessionStorage.removeItem(this.SESSION_KEY);
+    this.loggedIn.next(false);
     return this.afAuth.auth.signOut();
   }
 

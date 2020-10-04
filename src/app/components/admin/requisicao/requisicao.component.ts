@@ -86,7 +86,7 @@ export class RequisicaoComponent implements OnInit {
   }
 
   carregaPrioridades() {
-    this.listaPrioridades = ['URGENTE', 'ALTA', 'MÉDIA', 'BAIXA'];
+    this.listaPrioridades = ['URGENTE', 'ALTA', 'MEDIA', 'BAIXA'];
   }
 
   add() {
@@ -115,7 +115,7 @@ export class RequisicaoComponent implements OnInit {
     this.popularRequisicao(this.form.value)
     this.requisicaoService.salvar(this.requisicaoSelecionada,
       success => {
-        Swal.fire('Cliente salvo com Sucesso', 'CLiente salvo com Sucesso', 'success');
+        Swal.fire('Requisição solicitada', 'Requisição solicitada com Sucesso', 'success');
         this.displayDialogRequisicao = false;
        // this.recuperarClientes();
       },

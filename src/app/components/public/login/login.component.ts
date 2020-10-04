@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
         this.authServ.buscarPermissoes(this.email,success => {
             this.usuario = (success);
             this.router.navigate(['/admin/painel']);
+            this.router.navigate(['/admin/painel']);
           },
           error => {
             return error;

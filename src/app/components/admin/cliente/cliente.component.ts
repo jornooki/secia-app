@@ -88,7 +88,7 @@ export class ClienteComponent implements OnInit {
   save() {
     this.clienteService.salvar(this.form.value,
       success => {
-        Swal.fire('Cliente salvo com Sucesso', 'CLiente salvo com Sucesso', 'success');
+        Swal.fire('Cliente salvo com Sucesso', 'Cliente salvo com Sucesso', 'success');
         this.displayDialogCliente = false;
         this.recuperarClientes();
       },

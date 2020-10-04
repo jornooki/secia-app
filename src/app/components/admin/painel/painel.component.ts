@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {PainelService} from '../../../services/painel.service';
+import {AuthenticationService} from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-painel',
@@ -7,10 +9,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PainelComponent implements OnInit {
 
-  constructor() { }
+  data: any;
+  prioridades: any;
+
+
+  constructor(private authServ: AuthenticationService, private painelService: PainelService) {
+  }
 
   ngOnInit() {
-    console.log("aqui");
+    this.recuperarTasks();
+
+  }
+
+  private recuperarTasks() {
+
+    this.painelService.list(this.authServ.getUsuarioLoogado(), success => {
+        this.prioridades = (success);
+        this.data = {
+          labels: ['Urgente', 'Alta', 'Média', 'Baixa'],
+          datasets: [
+            {
+              data: [this.prioridades.quantidadeUrgente, this.prioridades.quantidadeAlta,
+                this.prioridades.quantidadeMedia, this.prioridades.quantidadeBaixa],
+              backgroundColor: [
+                '#FF6384',
+                '#FFCE56',
+                '#36A2EB',
+                '#98ff98'
+              ],
+              hoverBackgroundColor: [
+                '#FF6384',
+                '#FFCE56',
+                '#36A2EB',
+                '#98ff98'
+              ]
+            }]
+        };
+      },
+      error => {
+        return error;
+      },
+      () => {
+      });
   }
 
 }

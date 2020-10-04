@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/public/login/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'admin/painel', pathMatch: 'full' },
+  { path: '', redirectTo: 'admin/painel', pathMatch: 'full'  },
   { path: 'login', component: LoginComponent },
   { path: 'admin/painel', loadChildren: () => import('./components/admin/painel/painel.module').then(m => m.PainelModule)},
   { path: 'admin/cliente', loadChildren: () => import('./components/admin/cliente/cliente.module').then(m => m.ClienteModule)},

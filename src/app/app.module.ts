@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PanelModule, ChartModule } from 'primeng/primeng';
 // Formulário
 import { FormsModule } from '@angular/forms';
 
@@ -39,7 +40,9 @@ import { HttpInterceptorService } from './components/public/login/httpIntercepto
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule,// imports firebase/storage only needed for storage features
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
+    ChartModule,
+    PanelModule
   ],
   providers: [
     {
