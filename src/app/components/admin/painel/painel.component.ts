@@ -10,16 +10,21 @@ import {AuthenticationService} from '../../../services/authentication.service';
 export class PainelComponent implements OnInit {
 
   data: any;
-  prioridades: any;
+  prioridades: any
+  isLogado: any;
 
 
   constructor(private authServ: AuthenticationService, private painelService: PainelService) {
   }
 
   ngOnInit() {
+
+    this.isLogado = this.authServ.isUsuarioLogado();
+    console.log(this.isLogado);
     this.recuperarTasks();
 
   }
+
 
   private recuperarTasks() {
 

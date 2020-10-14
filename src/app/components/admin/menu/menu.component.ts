@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from 'src/app/services/authentication.service';
+import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -12,15 +12,18 @@ export class MenuComponent implements OnInit {
 
   isLogado = false;
   usuarioLogado: string = '';
+  mostrarMenu: boolean = false;
   user: Observable<firebase.User>;
 
   constructor(private authServ: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
-   // this.user = this.authServ.authUser();
+    // this.user = this.authServ.authUser();
     this.isLogado = this.authServ.isUsuarioLogado();
-    this.usuarioLogado = this.authServ.getUsuarioLoogado();
-
+    this.authServ.usuarioLogadoEmitter.subscribe(
+      usuario => this.usuarioLogado = usuario);
+    this.authServ.mostrarMenuEmitter.subscribe(
+      mostrar => this.mostrarMenu = mostrar);
     if(!this.isLogado) {
       this.router.navigateByUrl('login');
     }
@@ -29,6 +32,5 @@ export class MenuComponent implements OnInit {
   sair() {
     this.authServ.logout().then(() => this.router.navigate(['/']));
   }
-
 
 }
