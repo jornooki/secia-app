@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import {BehaviorSubject, Observable} from 'rxjs';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = 'https://api-secia.herokuapp.com';
 
 
 @Injectable({

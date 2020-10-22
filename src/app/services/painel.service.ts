@@ -6,12 +6,12 @@ import {HttpClient} from '@angular/common/http';
 })
 export class PainelService {
 
-  urlRest= 'http://localhost:8080/';
+  urlRest:string;
 
   constructor(
     private _httpClient: HttpClient
   ) {
-
+      this.urlRest = '${environment.apiUrl}'
   }
 
   list(email: any,  callbackSuccess: any, callbackError: any, callbackFinally: any): any {

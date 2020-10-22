@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ServiceFirebase } from '../core/servicefirebase.service';
-import { Requisicao } from '../models/requisicao.model';
-import { AngularFirestore } from '@angular/fire/firestore';
-import * as firebase from "firebase/app";
 import {HttpClient} from '@angular/common/http';
 
 @Injectable({
@@ -10,13 +6,14 @@ import {HttpClient} from '@angular/common/http';
 })
 export class RequisicaoService  {
 
-  urlRest= 'http://localhost:8080/';
+  urlRest:string;
 
   constructor(
     private _httpClient: HttpClient
   ) {
-
+    this.urlRest = '${environment.apiUrl}'
   }
+
 
   list(callbackSuccess: any, callbackError: any, callbackFinally: any): any {
 
