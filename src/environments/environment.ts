@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
 
-  apiUrl:'https://api-secia.herokuapp.com',
+  apiUrl:'https://api-secia.herokuapp.com/',
 
   firebase: {
     apiKey: "AIzaSyAefXQgEly21HVWkTFWzkCl1RKNhrzGcPo",

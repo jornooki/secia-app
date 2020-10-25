@@ -11,7 +11,7 @@ export class PainelService {
   constructor(
     private _httpClient: HttpClient
   ) {
-      this.urlRest = '${environment.apiUrl}'
+      this.urlRest = 'https://api-secia.herokuapp.com/'
   }
 
   list(email: any,  callbackSuccess: any, callbackError: any, callbackFinally: any): any {

@@ -11,7 +11,7 @@ export class RequisicaoService  {
   constructor(
     private _httpClient: HttpClient
   ) {
-    this.urlRest = '${environment.apiUrl}'
+    this.urlRest = 'https://api-secia.herokuapp.com/'
   }
 
 
